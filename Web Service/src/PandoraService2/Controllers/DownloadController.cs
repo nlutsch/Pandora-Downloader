@@ -7,6 +7,7 @@ using System.IO;
 using System.Net.Http;
 using TagLib;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace PandoraService2.Controllers
 {
@@ -14,10 +15,12 @@ namespace PandoraService2.Controllers
     public class DownloadController : Controller
     {
         private ILogger _logger;
+        private AppSettings _settings;
 
-        public DownloadController(ILoggerFactory logFactory)
+        public DownloadController(ILoggerFactory logFactory, IOptions<AppSettings> settings)
         {
             _logger = logFactory.CreateLogger(nameof(DownloadController));
+            _settings = settings.Value;
         }
 
         [HttpPost]
@@ -25,11 +28,11 @@ namespace PandoraService2.Controllers
         {
             var uri = new Uri(url);
             var artUri = new Uri(artUrl);
-            var songfilename = station + "/" + artist + " - " + title + ".mp3";
-            var artfilename = station + "/artwork/" + artist + " - " + title + ".jpg";
+            var songfilename = _settings.DownloadLocation + "/" + station + "/" + artist + " - " + title + ".mp3";
+            var artfilename = _settings.DownloadLocation + "/" + station + "/artwork/" + album + ".jpg";
 
             Directory.CreateDirectory(station);
-            Directory.CreateDirectory(station + "/artwork");
+            Directory.CreateDirectory(_settings.DownloadLocation + "/" + station + "/artwork");
 
             //Microsoft.Extensions.Logging.Console.
             _logger.LogInformation("Attempting to download '{0}' by '{1}'.", title, artist);

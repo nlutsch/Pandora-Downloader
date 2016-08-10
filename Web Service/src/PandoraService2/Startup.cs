@@ -29,6 +29,8 @@ namespace PandoraService2
         {
             // Add framework services.
             services.AddMvc();
+            services.AddOptions();
+            services.Configure<AppSettings>(Configuration.GetSection("UserSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
