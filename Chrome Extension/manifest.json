@@ -22,6 +22,10 @@
         "matches"    : [ "http://www.pandora.com/*", "https://www.pandora.com/*" ]
     }],
 
+    "icons": { "16": "icon16.png",
+           "48": "icon48.png",
+          "128": "icon128.png" },
+
     // Initialize our background worker page that will manage the information
     "background": {
         "page": "background.html"
