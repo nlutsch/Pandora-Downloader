@@ -10,6 +10,6 @@ namespace PandoraService2
     public class AppSettings
     {
         public string DownloadLocation { get; set; }
-        public int Port { get; set; }
+        public bool KeepAlbumArt { get; set; }
     }
 }

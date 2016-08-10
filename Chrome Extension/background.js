@@ -1,5 +1,9 @@
 $( function() {
     var currentSongUrl = undefined;
+	var port = 2002;
+	chrome.storage.sync.get('port', function(obj) {
+		port = obj.port;
+	});
 
     // Setup the listener for pandora's outgoing requests
     chrome.webRequest.onBeforeRequest.addListener( function(details) {
@@ -24,7 +28,7 @@ $( function() {
     }
 
     function download(request, sender, sendResponse) {
-        var song = '(' + request.title + ' - ' + request.artist + ')';
+        var song = '\'' + request.artist + ' - ' + request.title + '\'';		
 
         // The information isn't available yet
         if ( request.title == "" ) {
@@ -50,9 +54,12 @@ $( function() {
 	        }, 2000);  
         }
 
+		var requestUrl = 'http://127.0.0.1:' + port + '/Download/Download';
+		console.log(requestUrl);
+		
         $.ajax({
             type: 'POST',
-            url: 'http://127.0.0.1:5000/Download/Download',
+            url: requestUrl,
             data: {
                 url   	 : currentSongUrl,
                 title 	 : request.title,
@@ -63,7 +70,7 @@ $( function() {
             },
             async: false
         }).success(function(request, textStatus, xhr) {
-            if ( request.status == 'fail' ) {
+            if (request.status == "Already Exists") {
                 send_info(song + ' has already been downloaded!')
             }
             else {
@@ -72,10 +79,12 @@ $( function() {
         }).error(function (request, textStatus, xhr) {
             if (xhr.status == 404)
                 send_info('The web server isn\'t running!');
+			else if (xhr.status == 400)
+				send_info('Could not find or create directory set in appsettings.config');
             else if (xhr.status == 500)
                 send_info('There was an internal web server error');
             else
-                send_info('An unknown error occured');
+                send_info('An unknown error occured. Check that your ports match.');
         });
         return 1;       
     }
@@ -90,4 +99,8 @@ $( function() {
     	    }
 	    });
     }
+	
+	function saveSong(songUrl, title, artist, album, station, artUrl) {
+		
+	}
 })

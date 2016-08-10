@@ -31,11 +31,23 @@ namespace PandoraService2.Controllers
             var songfilename = _settings.DownloadLocation + "/" + station + "/" + artist + " - " + title + ".mp3";
             var artfilename = _settings.DownloadLocation + "/" + station + "/artwork/" + album + ".jpg";
 
-            Directory.CreateDirectory(station);
-            Directory.CreateDirectory(_settings.DownloadLocation + "/" + station + "/artwork");
+            try
+            {
+                Directory.CreateDirectory(_settings.DownloadLocation + "/" + station);
+                Directory.CreateDirectory(_settings.DownloadLocation + "/" + station + "/artwork");
+            }
+            catch
+            {
+                return BadRequest("Cannot create directory");
+            }
 
             //Microsoft.Extensions.Logging.Console.
-            _logger.LogInformation("Attempting to download '{0}' by '{1}'.", title, artist);
+            _logger.LogInformation("Attempting to download '{0}' - '{1}'.", title, artist);
+
+            if (System.IO.File.Exists(songfilename))
+            {
+                return Ok("Already Exists");
+            }
 
             DownloadAsync(uri, songfilename, title, artist, album, artUri, artfilename);
             
