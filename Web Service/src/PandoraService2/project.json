@@ -1,6 +1,8 @@
 {
     "dependencies": {
         "Microsoft.NETCore.App": {
+            "version": "1.0.0",
+            "type": "platform"
         },
         "Microsoft.AspNetCore.Mvc": "1.0.0",
         "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
@@ -28,6 +30,10 @@
         }
     },
 
+    //"runtimes": {
+    //    "win10-x64": {},
+    //    "osx.10.11-x64": {}
+    //},
 
     "buildOptions": {
         "emitEntryPoint": true,
@@ -40,9 +46,16 @@
         }
     },
 
-  "scripts": {
-    "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
-  }
+    "publishOptions": {
+        "include": [
+            "wwwroot",
+            "Views",
+            "Areas/**/Views",
+            "appsettings.json",
+            "web.config"
+        ]
+    },
+
     "scripts": {
         "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
     }
