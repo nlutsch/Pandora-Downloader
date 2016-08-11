@@ -9,7 +9,7 @@ $( function() {
 
     // Setup the listener for pandora's outgoing requests
     chrome.webRequest.onBeforeRequest.addListener( function(details) {
-        if ( details.url.match( /(http.*\.pandora.com\/access\/.*)/i ) || details.url.match( /(http.*\.cdn.com\/access\/.*)/i )) {
+        if ( details.url.match( /(http.*\.pandora.com\/access\/.*)/i ) || details.url.match( /(http.*\.cdn.com\/access\/.*)/i )  || details.url.match( /(http.*\.p-cdn.com\/access\/.*)/i )) {
             currentSongUrl = details.url;
 	        setTimeout(function () {
                 sendMessageToTabs();
