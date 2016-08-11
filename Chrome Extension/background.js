@@ -2,7 +2,9 @@ $( function() {
     var currentSongUrl = undefined;
 	var port = 2002;
 	chrome.storage.sync.get('port', function(obj) {
-		port = obj.port;
+		port = obj.port
+        if (port == undefined)
+            port = 2002;
 	});
 
     // Setup the listener for pandora's outgoing requests
