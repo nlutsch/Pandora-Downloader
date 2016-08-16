@@ -45,6 +45,7 @@ namespace PandoraService2.Controllers
 
             if (System.IO.File.Exists(songfilename))
             {
+                _logger.LogInformation("'{0}' - '{1}' was already downloaded.", title, artist);
                 return Ok("Already Exists");
             }
 
@@ -65,7 +66,7 @@ namespace PandoraService2.Controllers
                         stream = new FileStream(songfilename, FileMode.Create, FileAccess.Write, FileShare.None, 10000000, true))
                     {
                         await contentStream.CopyToAsync(stream);
-                        _logger.LogInformation("Successfully Downloaded {0}!", songfilename);
+                        _logger.LogInformation("Successfully Downloaded {0}", songfilename);
                     }
                 }
 
